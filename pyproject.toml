@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "pythondaq"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "pythondaq", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.23.4"
+matplotlib = "^3.6.2"
+pyvisa = "^1.12.0"
+pandas = "^1.5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+naam_commando = "pythondaq.view:do_commando"
