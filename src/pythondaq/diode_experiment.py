@@ -11,6 +11,7 @@ class DiodeExperiment():
         self.voltage = []
         port = "ASRL5::INSTR"
         self.device = ArduinoVISADevice(port=port)
+        
     def scan(self, start, end):
         for a in range (start, end):
             self.device.set_output_value(a)
