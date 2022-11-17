@@ -1,7 +1,15 @@
 from pythondaq.arduino_device import list_devices, ArduinoVISADevice
 
 
-def convert_bit_to_voltage(bit):  
+def convert_bit_to_voltage(bit):
+    """convert bit to voltage
+
+    Args:
+        bit (int)
+
+    Returns:
+        voltage: float
+    """
     voltage = (bit/1023)* 3.3
     return voltage
 
@@ -11,8 +19,18 @@ class DiodeExperiment():
         self.voltage = []
         port = "ASRL5::INSTR"
         self.device = ArduinoVISADevice(port=port)
-        
+
     def scan(self, start, end):
+        """walks trough start- end to vary manually set voltage across that range
+
+
+        Args:
+            start (int): 
+            end (int): 
+
+        Returns:
+            _current and voltage
+        """        
         for a in range (start, end):
             self.device.set_output_value(a)
             voltage_res = int(self.device.get_input_value(channel=2))    # in bits
