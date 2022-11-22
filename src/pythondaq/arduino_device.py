@@ -10,6 +10,7 @@ def list_devices():
     """    
     rm = pyvisa.ResourceManager("@py")
     ports = rm.list_resources()
+    # print(ports)
     return ports
 
 class ArduinoVISADevice:

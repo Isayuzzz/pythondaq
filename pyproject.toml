@@ -21,3 +21,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 naam_commando = "pythondaq.view:do_commando"
+pythondaq = "pythondaq.cli:cmd_group" 
