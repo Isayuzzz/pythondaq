@@ -113,6 +113,14 @@ pytz = ">=2020.1"
 test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 
 [[package]]
+name = "pastel"
+version = "0.2.1"
+description = "Bring colors to your terminal."
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
 name = "pillow"
 version = "9.3.0"
 description = "Python Imaging Library (Fork)"
@@ -125,6 +133,21 @@ docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-issues
 tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
 
 [[package]]
+name = "poethepoet"
+version = "0.16.5"
+description = "A task runner that works well with poetry."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+pastel = ">=0.2.1,<0.3.0"
+tomli = ">=1.2.2"
+
+[package.extras]
+poetry-plugin = ["poetry (>=1.0,<2.0)"]
+
+[[package]]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
@@ -134,6 +157,53 @@ python-versions = ">=3.6.8"
 
 [package.extras]
 diagrams = ["jinja2", "railroad-diagrams"]
+
+[[package]]
+name = "pyqtgraph"
+version = "0.13.1"
+description = "Scientific Graphics and GUI Library for Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+numpy = ">=1.20.0"
+
+[[package]]
+name = "pyside6"
+version = "6.4.1"
+description = "Python bindings for the Qt cross-platform application and UI framework"
+category = "main"
+optional = false
+python-versions = "<3.12,>=3.7"
+
+[package.dependencies]
+PySide6-Addons = "6.4.1"
+PySide6-Essentials = "6.4.1"
+shiboken6 = "6.4.1"
+
+[[package]]
+name = "pyside6-addons"
+version = "6.4.1"
+description = "Python bindings for the Qt cross-platform application and UI framework (Addons)"
+category = "main"
+optional = false
+python-versions = "<3.12,>=3.7"
+
+[package.dependencies]
+PySide6-Essentials = "6.4.1"
+shiboken6 = "6.4.1"
+
+[[package]]
+name = "pyside6-essentials"
+version = "6.4.1"
+description = "Python bindings for the Qt cross-platform application and UI framework (Essentials)"
+category = "main"
+optional = false
+python-versions = "<3.12,>=3.7"
+
+[package.dependencies]
+shiboken6 = "6.4.1"
 
 [[package]]
 name = "python-dateutil"
@@ -197,6 +267,14 @@ test = ["pytest (>=6.2)", "virtualenv (>20)"]
 toml = ["setuptools (>=42)"]
 
 [[package]]
+name = "shiboken6"
+version = "6.4.1"
+description = "Python/C++ bindings helper module"
+category = "main"
+optional = false
+python-versions = "<3.12,>=3.7"
+
+[[package]]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -222,8 +300,8 @@ python-versions = ">=3.7"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.9"
-content-hash = "ee1f01625625c8ebae9d3e1189a3eb9d23c1d939f9adc344c648ea933501c500"
+python-versions = ">=3.9,<3.12"
+content-hash = "21ccf085f38dacd8535f067ce3717e4fa8aa162c677d421e95732676f16c1314"
 
 [metadata.files]
 contourpy = [
@@ -481,6 +559,10 @@ pandas = [
     {file = "pandas-1.5.1-cp39-cp39-win_amd64.whl", hash = "sha256:6bb391659a747cf4f181a227c3e64b6d197100d53da98dcd766cc158bdd9ec68"},
     {file = "pandas-1.5.1.tar.gz", hash = "sha256:249cec5f2a5b22096440bd85c33106b6102e0672204abd2d5c014106459804ee"},
 ]
+pastel = [
+    {file = "pastel-0.2.1-py2.py3-none-any.whl", hash = "sha256:4349225fcdf6c2bb34d483e523475de5bb04a5c10ef711263452cb37d7dd4364"},
+    {file = "pastel-0.2.1.tar.gz", hash = "sha256:e6581ac04e973cac858828c6202c1e1e81fee1dc7de7683f3e1ffe0bfd8a573d"},
+]
 pillow = [
     {file = "Pillow-9.3.0-1-cp37-cp37m-win32.whl", hash = "sha256:e6ea6b856a74d560d9326c0f5895ef8050126acfdc7ca08ad703eb0081e82b74"},
     {file = "Pillow-9.3.0-1-cp37-cp37m-win_amd64.whl", hash = "sha256:32a44128c4bdca7f31de5be641187367fe2a450ad83b833ef78910397db491aa"},
@@ -544,9 +626,41 @@ pillow = [
     {file = "Pillow-9.3.0-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:073adb2ae23431d3b9bcbcff3fe698b62ed47211d0716b067385538a1b0f28b8"},
     {file = "Pillow-9.3.0.tar.gz", hash = "sha256:c935a22a557a560108d780f9a0fc426dd7459940dc54faa49d83249c8d3e760f"},
 ]
+poethepoet = [
+    {file = "poethepoet-0.16.5-py3-none-any.whl", hash = "sha256:493d5d47b4cb0894dde6a69d14129ba39ef3f124fabda1f83ebb39bbf737a40e"},
+    {file = "poethepoet-0.16.5.tar.gz", hash = "sha256:3c958792ce488661ba09df67ba832a1b3141aa640236505ee60c23f4b1db4dbc"},
+]
 pyparsing = [
     {file = "pyparsing-3.0.9-py3-none-any.whl", hash = "sha256:5026bae9a10eeaefb61dab2f09052b9f4307d44aee4eda64b309723d8d206bbc"},
     {file = "pyparsing-3.0.9.tar.gz", hash = "sha256:2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"},
+]
+pyqtgraph = [
+    {file = "pyqtgraph-0.13.1-py3-none-any.whl", hash = "sha256:906b2784c213890bf2a1df43e3675eff1921ee894ab9673468747fb993ea2d6c"},
+    {file = "pyqtgraph-0.13.1.tar.gz", hash = "sha256:698f87f59db965727b33602a0b29058de21291d8b143dea878b50578aec0dc08"},
+]
+pyside6 = [
+    {file = "PySide6-6.4.1-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:a5e56ce84db3453a1522d7bebaeb161f3c95fd5eeeb159f76e79615294772e8a"},
+    {file = "PySide6-6.4.1-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:e0730024e682dd98ec3637432c98bf682bc8f3e64083acf681a62a1a1a9e2beb"},
+    {file = "PySide6-6.4.1-cp37-abi3-win_amd64.whl", hash = "sha256:c9674ccb1c36e60c458c4a14edbfecf72a331430e18501f7b667f9db496291df"},
+    {file = "PySide6-6.4.1-pp39-pypy39_pp73-macosx_10_9_universal2.whl", hash = "sha256:357af1b85febe54f8c9c3b785ac8d869d40a024bded765525e46cd2b99f6b53a"},
+    {file = "PySide6-6.4.1-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:03261b61652c0a45ccfb6f34cbbcb3449490926401e9e150b528a862a9f97a95"},
+    {file = "PySide6-6.4.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:88ad906b21a6db13f5046ebec5247972cff5559aa6d462465600c8bc2655d491"},
+]
+pyside6-addons = [
+    {file = "PySide6_Addons-6.4.1-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:6174d39112ad3ec5fbc86aaaccda71756d8809e716a86bb09e38ed3dcae6d952"},
+    {file = "PySide6_Addons-6.4.1-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:4530b6b46cec721eb0a3960f2cb618e17ef100ee5b0cbfa95201e87bd4a6b3e8"},
+    {file = "PySide6_Addons-6.4.1-cp37-abi3-win_amd64.whl", hash = "sha256:91873aaefa01736bf39148b19fc62ab824000e9cdd1db9ebf98b5e0712f0f946"},
+    {file = "PySide6_Addons-6.4.1-pp39-pypy39_pp73-macosx_10_9_universal2.whl", hash = "sha256:aa87ade042bfde316479f2dddbc2c66000a0e65ff5bd24291375a21758e07d36"},
+    {file = "PySide6_Addons-6.4.1-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:d0daf2b685a28f51d2880478b1fd3441c943f8ecfbd41b7dbea3563eb78e8913"},
+    {file = "PySide6_Addons-6.4.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:509ae75aabaf191b07e8e1819efaba1a8bfeda692efbfb8eb5adbfcc8a534d35"},
+]
+pyside6-essentials = [
+    {file = "PySide6_Essentials-6.4.1-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:f980e9c8ee9b2304d6c71e499e96f351c82e28cbfcf6cc6cde0feffd706af330"},
+    {file = "PySide6_Essentials-6.4.1-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:457d73bb38cf7fb573a24da00ecb9aa7b8cf6a4cb5cc8ffcce2c241502a6e774"},
+    {file = "PySide6_Essentials-6.4.1-cp37-abi3-win_amd64.whl", hash = "sha256:0d3052ab72daebc15381fb095b673dd75cf4d2f1dc8680b7aabe27537cdde352"},
+    {file = "PySide6_Essentials-6.4.1-pp39-pypy39_pp73-macosx_10_9_universal2.whl", hash = "sha256:3b36d605f28b742dfc676816d440ba6baa51c6f31dd2dbf3a44e28edcf006523"},
+    {file = "PySide6_Essentials-6.4.1-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:aadd06c09dc51e5894d2fce70210906ce7d981686ceddfff69c47e4227bc1706"},
+    {file = "PySide6_Essentials-6.4.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:4cade08b091a128ca5567a8d23fd25b1825dc18648cfb71dd002f0935ee4c3cc"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
@@ -567,6 +681,14 @@ setuptools = [
 setuptools-scm = [
     {file = "setuptools_scm-7.0.5-py3-none-any.whl", hash = "sha256:7930f720905e03ccd1e1d821db521bff7ec2ac9cf0ceb6552dd73d24a45d3b02"},
     {file = "setuptools_scm-7.0.5.tar.gz", hash = "sha256:031e13af771d6f892b941adb6ea04545bbf91ebc5ce68c78aaf3fff6e1fb4844"},
+]
+shiboken6 = [
+    {file = "shiboken6-6.4.1-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:6d61061df739e5ed9595f925e4d1de9c98bdabb995ee29d0be88a873a6171e85"},
+    {file = "shiboken6-6.4.1-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:41e67b67f65626bdd909f9c5fd5f80231ee6ae43418b331590ba225b3cfabd5b"},
+    {file = "shiboken6-6.4.1-cp37-abi3-win_amd64.whl", hash = "sha256:ed6158e8abe4a28530fba27c367dd78038d338f27d44cc8b863cf1fdb8977f2e"},
+    {file = "shiboken6-6.4.1-pp39-pypy39_pp73-macosx_10_9_universal2.whl", hash = "sha256:1c3efc307ed20bf9cea5ceafc089032b33aba95297f70e469b5a19f1070eb1e8"},
+    {file = "shiboken6-6.4.1-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:7cee2cb6becd29e55913468602fa90554895ad38448d57f1d2ebe681014b087d"},
+    {file = "shiboken6-6.4.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:44f81fe7faa4ee3a313e687c8a4852bba454116822e76f80339b2aa0512cfc6a"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},

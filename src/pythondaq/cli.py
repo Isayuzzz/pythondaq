@@ -1,7 +1,8 @@
 import click
 from pythondaq.arduino_device import list_devices, ArduinoVISADevice
-from pythondaq.diode_experiment import *
 import pandas as pd
+from pythondaq.diode_experiment import *
+
 import matplotlib.pyplot as plt
 
 def convert_volt_to_bit(volt):

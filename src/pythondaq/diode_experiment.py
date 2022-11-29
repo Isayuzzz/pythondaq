@@ -82,12 +82,11 @@ class DiodeExperiment():
                 lists_current.append(self.current)
                 lists_voltages.append(self.voltage)
 
-                
 
 
-                # results 
+            # results 
             print(b, "/", times_to_repeat)
-                # print("ON LED: ", voltage_led, "(", voltage_led_, "V)    Over resistor  (", voltage_res_, "V)")
+            # print("ON LED: ", voltage_led, "(", voltage_led_, "V)    Over resistor  (", voltage_res_, "V)")
 
             lists_current_arr = np.array(lists_current)
             lists_voltage_arr = np.array(lists_voltages)
