@@ -7,7 +7,6 @@ from pythondaq.diode_experiment import *
 import pandas as pd
 import matplotlib.pyplot as plt
 import pyvisa
-import threading
 
 
 
@@ -30,55 +29,52 @@ def convert_volt_to_bit(volt):
 
 
 class UserInterface(QtWidgets.QMainWindow):
-    """User Interface to plot a sin function 
+    """
+        The userinterface of the experimenmt
 
-        ARg: Q main window
-
-        Return: User interface of a sin function with spinboxes to vary min, max, number of steps
+        Contains all the relevant buttons, widgets and experiments
 
     """    
 
-    def __init__(self):
+    def __init__(self):     
         super().__init__()
-
+        # measurements
         self.voltage_mean, self.current_mean, self.voltage_std, self.current_std = [], [], [], []
-
+        # guves ports
         rm = pyvisa.ResourceManager("@py")
         self.ports = rm.list_resources()
+        # default port
         self.port_name = "ASRL5::INSTR"
         self.path_plus_name = ""
+        # Intilise df
         self.df = pd.DataFrame()
-        print(self.ports)
 
         # ------------------     widget spinboxes for min, max and numpoints
         self.widget_spin_box_min = QtWidgets.QDoubleSpinBox()
         self.widget_spin_box_min.setRange(0, 3.0)
         self.widget_spin_box_min.setSingleStep(0.1)
-        # self.widget_spin_box_min.valueChanged.connect(self.value_changed)
 
         self.widget_spin_box_max = QtWidgets.QDoubleSpinBox()
         self.widget_spin_box_max.setRange(1.0,3.3)
         self.widget_spin_box_max.setSingleStep(0.1)
-        # self.widget_spin_box_max.valueChanged.connect(self.value_changed)
 
         self.numpoints = QtWidgets.QSpinBox()
         self.numpoints.setRange(0,10)
         self.numpoints.setSingleStep(1)
         self.numpoints.valueChanged.connect(self.value_changed)        
 
+        # Browse button and save button
         self.browse_button = QtWidgets.QPushButton("Browse")
         self.save_button = QtWidgets.QPushButton("save")
         self.start_button = QtWidgets.QPushButton("start")
 
         self.port_selector = QtWidgets.QComboBox()
+
+        # add ports in saveports
         for a in self.ports:
             self.port_selector.addItem(a)
         self.port_selector.currentIndexChanged.connect(self.value_changed)
-        
-        
-
-        # self.port_selector.valueChanged.connect(self.new_port)
-        # # ------------------
+       
 
         # initiate the plot
         self.plot_widget = pg.PlotWidget()
@@ -87,17 +83,11 @@ class UserInterface(QtWidgets.QMainWindow):
         start = 0; end =3.3; n_times = 1
 
         _, _, self.voltage_mean, self.current_mean, self.voltage_std, self.current_std = experiment.scan(start = convert_volt_to_bit(start), end = convert_volt_to_bit(end), times_to_repeat=n_times)
-
-
+        
+        # plot widget with labels
         self.plot_widget.plot(self.voltage_mean, self.current_mean, pen=None, symbol="o")
         self.plot_widget.setLabel("left", "y")
         self.plot_widget.setLabel("bottom", "x ")
-        
-
-
-        # TODO voltage is te klein, er zit dus een error, hierdoor komt er geen error bar.
-        # plt.errorbar(voltage_mean, current_mean, yerr=current_std, fmt='o')
-     
 
         # title
         self.setWindowTitle("My sine function")
@@ -109,7 +99,7 @@ class UserInterface(QtWidgets.QMainWindow):
         vbox = QtWidgets.QVBoxLayout(central_widget)
         vbox.addWidget(self.plot_widget)
 
-        # labels
+        # labels 
         self.l1 = QtWidgets.QLabel()
         self.l2 = QtWidgets.QLabel()
         self.l3 = QtWidgets.QLabel()
@@ -140,15 +130,11 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox2.addWidget(self.port_selector)
         vbox.addLayout(hbox2)
 
+        # add click.connect to buttons
         self.browse_button.clicked.connect(self.browse)
         self.save_button.clicked.connect(self.save)
         self.start_button.clicked.connect(self.plotter)
-        # self.port_selector.clicked.connect(self.new_port)
-        # TODO save button nog erbij krijgen; probleem ligt bij het feit dat je nog geen argumenten mag geven
-        # self.save_button.clicked.connect(self.save, arguments= (self.browse(), self.plotter(self.widget_spin_box_min.value, self.widget_spin_box_max.value, self.numpoints.value)))
-
-
-
+      
     @Slot()
     def plotter(self):
         """plot sin function
@@ -158,41 +144,47 @@ class UserInterface(QtWidgets.QMainWindow):
             plot 
         """        
         self.plot_widget.clear() 
-        # start = 0; end =3.3; n_times = 1
         start =self.widget_spin_box_min.value(); end = self.widget_spin_box_max.value(); n_times = self.numpoints.value()
-        experiment = DiodeExperiment(port_name = self.port_name)
-        _, _, self.voltage_mean, self.current_mean, self.voltage_std, self.current_std = experiment.scan(start = convert_volt_to_bit(start), end = convert_volt_to_bit(end), times_to_repeat=n_times)
-        zipped = list(zip(self.voltage_mean, self.current_mean, self.voltage_std, self.current_std))
 
+        experiment = DiodeExperiment(port_name = self.port_name)
+        # _, _, self.voltage_mean, self.current_mean, self.voltage_std, self.current_std = experiment.scan(start = convert_volt_to_bit(start), end = convert_volt_to_bit(end), times_to_repeat=n_times)
+        experiment.start_scan(start = convert_volt_to_bit(start), stop= convert_volt_to_bit(end), steps=n_times)
+        experiment._scan_thread.join()
+        # self.experiment.voltage_mean
+        zipped = list(zip(experiment.voltage_mean, experiment.current_mean, experiment.voltage_std, experiment.current_std))
 
         df = pd.DataFrame(zipped, columns=['voltage_mean', 'current_mean', 'voltage_std', 'current_std'])
         self.df = df
 
-        self.plot_widget.plot(self.voltage_mean, self.current_mean, pen=None, symbol="o")
+        self.plot_widget.plot(experiment.voltage_mean, experiment.current_mean, pen=None, symbol="o")
         self.plot_widget.setLabel("left", "y")
         self.plot_widget.setLabel("bottom", "x ")
         
         return df
+
     @Slot()
     def browse(self):
+        """gives path chosen by user
+        """        
         filename, _ = QtWidgets.QFileDialog.getSaveFileName(filter="CSV files (*.csv)")
         self.path_plus_name = filename
+
         return filename
 
     @Slot()
     def save(self):
+        """saves data as csv file
+        """        
         self.df.to_csv(self.path_plus_name)
         return
+
     @Slot()
     def value_changed(self):
-        # self.widget_spin_box_min = self.widget_spin_box_min.value()
-        # self.widget_spin_box_max = self.widget_spin_box_max.value()
-        # self.numpoints = self.numpoints.value()
+        """This function does nothing, 
+        it is only used in order to be used as an argument 
+        to make the code function properly
+        """        
         return None
-
-    # @Slot
-    # def port_value_changed(self):
-        
 
 
 def main():

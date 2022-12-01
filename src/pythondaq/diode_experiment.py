@@ -1,5 +1,7 @@
 from pythondaq.arduino_device import list_devices, ArduinoVISADevice
 import numpy as np
+import threading
+
 
 def convert_bit_to_voltage(bit):
     """convert bit to voltage
@@ -20,35 +22,6 @@ class DiodeExperiment():
         # port = "ASRL5::INSTR"
         self.device = ArduinoVISADevice(port=port_name)
 
-    # def scan(self, start, end):
-    #     """walks trough start- end to vary manually set voltage across that range
-
-
-    #     Args:
-    #         start (int): 
-    #         end (int): 
-
-    #     Returns:
-    #         _current and voltage
-    #     """        
-
-    #     for a in range (start, end):
-    #         self.device.set_output_value(a)
-    #         voltage_res = int(self.device.get_input_value(channel=2))    # in bits
-    #         voltage_res_ = convert_bit_to_voltage(voltage_res)   #In Volt
-    #         voltage_led = abs(int(self.device.get_input_value(channel=1)) - int(self.device.get_input_value(channel=2)))         # in bits
-    #         voltage_led_ = convert_bit_to_voltage(voltage_led)        # in V
-
-    #         stroom = voltage_res_ / 220
-    #         self.current.append(stroom)
-    #         self.voltage.append(voltage_led_)
-
-    #         # results 
-    #         print("ON LED: ", voltage_led, "(", voltage_led_, "V)    Over resistor  (", voltage_res_, "V)")
-
-            
-    #     self.device.set_output_value(value=0)
-    #     return self.current, self.voltage
     def scan(self, start, end, times_to_repeat):
         """walks trough start- end to vary manually set voltage across that range
 
@@ -85,17 +58,23 @@ class DiodeExperiment():
 
 
             # results 
-            print(b, "/", times_to_repeat)
+            print(b+1, "/", times_to_repeat)
             # print("ON LED: ", voltage_led, "(", voltage_led_, "V)    Over resistor  (", voltage_res_, "V)")
 
             lists_current_arr = np.array(lists_current)
             lists_voltage_arr = np.array(lists_voltages)
-            voltage_mean = np.mean(lists_voltage_arr, axis = 0)
-            current_mean = np.mean(lists_current_arr, axis = 0)
-            voltage_std = np.std(lists_voltage_arr, axis = 0)
-            current_std = np.std(lists_current_arr, axis = 0)
+            self.voltage_mean = np.mean(lists_voltage_arr, axis = 0)
+            self.current_mean = np.mean(lists_current_arr, axis = 0)
+            self.voltage_std = np.std(lists_voltage_arr, axis = 0)
+            self.current_std = np.std(lists_current_arr, axis = 0)
 
             self.device.set_output_value(value=0)
-        return self.current, self.voltage, voltage_mean, current_mean, voltage_std, current_std
 
+        return self.current, self.voltage, self.voltage_mean, self.current_mean, self.voltage_std, self.current_std
         
+        # The scan thread functie maken
+    def start_scan(self, start, stop, steps):
+        """Start a new thread to execute a scan."""
+        self._scan_thread = threading.Thread(target=self.scan, args=(start, stop, steps))
+        self._scan_thread.start()
+
